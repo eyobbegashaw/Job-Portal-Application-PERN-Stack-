@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int           @id @default(autoincrement())
+  name            String
+  email           String        @unique
+  password        String
+  userType        String        @map("user_type") // jobseeker, company, admin
+  status          String        @default("Pending") // Pending, Approved, Rejected
+  companyName     String?       @map("company_name")
+  profileImagePath String?       @map("profile_image_path")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  
+  // Relations
+  jobPostings     JobPosting[]
+  savedJobs       SavedJob[]
+  applications    JobApplication[]
+  sentMessages    Message[]     @relation("SentMessages")
+  receivedMessages Message[]    @relation("ReceivedMessages")
+
+  @@map("users")
+}
+
+model AdminCompany {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  companyId String   @unique @map("company_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("admin_companies")
+}
+
+model JobPosting {
+  id            Int           @id @default(autoincrement())
+  title         String
+  description   String        @db.Text
+  jobType       String        @map("job_type")
+  vacancies     Int
+  qualifications String       @db.Text
+  skills        String        @db.Text
+  experience    Int
+  salaryRange   String?       @map("salary_range")
+  deadline      DateTime
+  location      String
+  method        String
+  companyName   String        @map("company_name")
+  logoFilePath  String?       @map("logo_file_path")
+  postedDate    DateTime      @default(now()) @map("posted_date")
+  userId        Int           @map("user_id")
+  isActive      Boolean       @default(true) @map("is_active")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  savedBy       SavedJob[]
+  applications  JobApplication[]
+
+  @@map("job_postings")
+  @@index([companyName])
+  @@index([deadline])
+  @@index([isActive])
+}
+
+model SavedJob {
+  userId    Int      @map("user_id")
+  jobId     Int      @map("job_id")
+  savedDate DateTime @default(now()) @map("saved_date")
+
+  // Relations
+  user User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job  JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@id([userId, jobId])
+  @@map("saved_jobs")
+}
+
+model JobApplication {
+  id          Int      @id @default(autoincrement())
+  jobId       Int      @map("job_id")
+  userId      Int      @map("user_id")
+  status      String   @default("pending") // pending, reviewed, accepted, rejected
+  appliedDate DateTime @default(now()) @map("applied_date")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  job JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, userId])
+  @@map("job_applications")
+}
+
+model ApplicationForm {
+  id          Int      @id @default(autoincrement())
+  companyName String   @map("company_name")
+  jobTitle    String   @map("job_title")
+  fields      Json     // Store form fields as JSON
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("application_forms")
+}
+
+model Message {
+  id           Int      @id @default(autoincrement())
+  senderId     Int      @map("sender_id")
+  recipientId  Int      @map("recipient_id")
+  companyName  String?  @map("company_name")
+  jobTitle     String?  @map("job_title")
+  content      String   @db.Text
+  logoFilePath String?  @map("logo_file_path")
+  isRead       Boolean  @default(false) @map("is_read")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+  @@index([recipientId])
+  @@index([senderId])
+  @@index([isRead])
+}
