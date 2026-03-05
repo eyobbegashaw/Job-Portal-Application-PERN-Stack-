@@ -1,63 +1,79 @@
-# Job Portal Application - PERN Stack Migration
+# Job Portal Application (PERN Stack)
 
-## 📋 Overview
-This is a complete migration of a legacy JavaFX Job Portal application to the modern PERN stack (PostgreSQL, Express.js, React, Node.js). The application provides a platform for job seekers, companies, and administrators to manage job postings, applications, and user management.
+## 📌 Overview
+* **PostgreSQL**
+* **Express.js**
+* **React**
+* **Node.js**
 
-## 🚀 Features
+The platform enables **job seekers, companies, and administrators** to interact within a centralized job marketplace where users can post jobs, apply for opportunities, and manage recruitment processes.
 
-### For Job Seekers
-- Browse and search for jobs
-- Save favorite jobs
-- Apply for jobs
-- Manage profile
-- View application status
+---
 
-### For Companies
-- Post new job opportunities
-- Manage job listings
-- Review applications
-- Company profile management
+# 🚀 Features
 
-### For Administrators
-- Approve/reject user registrations
-- Manage companies
-- Monitor platform activity
-- User management
+## 👨‍💼 Job Seekers
 
-## 🛠️ Technology Stack
+* Browse and search available jobs
+* Save favorite job postings
+* Apply to job opportunities
+* Manage personal profile
+* Track application status
 
-### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **PostgreSQL** - Database
-- **Prisma ORM** - Database toolkit
-- **JWT** - Authentication
-- **Bcrypt** - Password hashing
-- **Multer** - File uploads
+## 🏢 Companies
 
-### Frontend
-- **React** - UI library
-- **React Router** - Navigation
-- **Tailwind CSS** - Styling
-- **Axios** - HTTP client
-- **React Hook Form** - Form handling
-- **React Hot Toast** - Notifications
-- **Date-fns** - Date formatting
+* Post new job openings
+* Manage job listings
+* Review and evaluate applications
+* Maintain company profiles
 
-## 📁 Project Structure
+## 🛡️ Administrators
+
+* Approve or reject new user registrations
+* Manage registered companies
+* Monitor system activity
+* Manage platform users
+
+---
+
+# 🛠️ Technology Stack
+
+## Backend
+
+* **Node.js** – JavaScript runtime
+* **Express.js** – Backend web framework
+* **PostgreSQL** – Relational database
+* **Prisma ORM** – Database ORM and migration tool
+* **JWT (JSON Web Tokens)** – Authentication
+* **Bcrypt** – Secure password hashing
+* **Multer** – File upload handling
+
+## Frontend
+
+* **React** – UI library
+* **React Router** – Client-side routing
+* **Tailwind CSS** – Utility-first styling framework
+* **Axios** – HTTP client
+* **React Hook Form** – Form management
+* **React Hot Toast** – Notifications
+* **date-fns** – Date formatting utilities
+
+---
+
+# 📁 Project Structure
+
+```
 JobPortal/
 │
 ├── backendJob/
+│   ├── server.js
 │   ├── package.json
-│   ├── package-lock.json
 │   ├── .env
 │   ├── .gitignore
-│   ├── server.js
 │   │
 │   ├── prisma/
 │   │   ├── schema.prisma
 │   │   └── migrations/
-│   │       └── (migration files will be here after running prisma migrate)
 │   │
 │   ├── src/
 │   │   ├── controllers/
@@ -86,9 +102,7 @@ JobPortal/
 │   │
 │   ├── uploads/
 │   │   ├── profiles/
-│   │   │   └── (profile images will be stored here)
 │   │   └── logos/
-│   │       └── (company logos will be stored here)
 │   │
 │   └── tests/
 │       ├── auth.test.js
@@ -97,12 +111,9 @@ JobPortal/
 │
 ├── frontendJob/
 │   ├── package.json
-│   ├── package-lock.json
 │   ├── .env
-│   ├── .gitignore
 │   ├── tailwind.config.js
 │   ├── postcss.config.js
-│   ├── README.md
 │   │
 │   ├── public/
 │   │   ├── index.html
@@ -112,46 +123,14 @@ JobPortal/
 │   ├── src/
 │   │   ├── index.js
 │   │   ├── App.js
-│   │   ├── App.css
-│   │   ├── index.css
-│   │   │
+│   │
 │   │   ├── components/
 │   │   │   ├── common/
-│   │   │   │   ├── Navbar.js
-│   │   │   │   ├── Footer.js
-│   │   │   │   ├── LoadingSpinner.js
-│   │   │   │   ├── ErrorBoundary.js
-│   │   │   │   ├── PrivateRoute.js
-│   │   │   │   ├── JobCard.js
-│   │   │   │   └── Alert.js
-│   │   │   │
 │   │   │   ├── auth/
-│   │   │   │   ├── LoginForm.js
-│   │   │   │   ├── RegisterForm.js
-│   │   │   │   └── ForgotPassword.js
-│   │   │   │
 │   │   │   ├── jobs/
-│   │   │   │   ├── JobList.js
-│   │   │   │   ├── JobDetails.js
-│   │   │   │   ├── PostJobForm.js
-│   │   │   │   ├── JobFilters.js
-│   │   │   │   └── SavedJobsList.js
-│   │   │   │
 │   │   │   ├── admin/
-│   │   │   │   ├── AdminPanel.js
-│   │   │   │   ├── PendingUsersList.js
-│   │   │   │   ├── CompanyManagement.js
-│   │   │   │   └── AdminStats.js
-│   │   │   │
 │   │   │   ├── profile/
-│   │   │   │   ├── UserProfile.js
-│   │   │   │   ├── EditProfile.js
-│   │   │   │   └── ProfileImage.js
-│   │   │   │
 │   │   │   └── layout/
-│   │   │       ├── Header.js
-│   │   │       ├── Sidebar.js
-│   │   │       └── MainLayout.js
 │   │   │
 │   │   ├── pages/
 │   │   │   ├── Home.js
@@ -185,28 +164,13 @@ JobPortal/
 │   │   │   └── userService.js
 │   │   │
 │   │   ├── utils/
-│   │   │   ├── validation.js
-│   │   │   ├── formatters.js
-│   │   │   ├── constants.js
-│   │   │   └── helpers.js
-│   │   │
 │   │   ├── assets/
-│   │   │   ├── images/
-│   │   │   │   └── (static images)
-│   │   │   ├── fonts/
-│   │   │   │   └── (custom fonts)
-│   │   │   └── styles/
-│   │   │       └── (additional CSS files)
-│   │   │
 │   │   └── types/
-│   │       └── (TypeScript type definitions if using TypeScript)
 │   │
 │   └── tests/
-│       ├── components/
-│       │   └── (component tests)
-│       ├── pages/
-│       │   └── (page tests)
-│       └── utils/
-│           └── (utility function tests)
 │
-└── docker-compose.yml (optional, for containerization)
+└── docker-compose.yml (optional)
+```
+
+---
+ 
